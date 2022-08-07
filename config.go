@@ -1,17 +1,22 @@
 package infrapi
 
 import (
-	"encoding/json"
-	"os"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"log"
 )
 
 var Config GlobalConfig
 
+type Redis struct {
+	Host string `yaml:"host"`
+	Pass string `yaml:"pass"`
+	DB   int    `yaml:"db"`
+}
+
 type GlobalConfig struct {
-	ApiBind   string `json:"apiBind"`
-	RedisHost string `json:"redisHost"`
-	RedisDB   int    `json:"redisDB"`
-	RedisPass string `json:"redisPass"`
+	ApiBind string `yaml:"apiBind"`
+	Redis   Redis
 }
 
 type ProxyConfig struct {
@@ -43,24 +48,25 @@ type PlayerSample struct {
 }
 
 var DefaultConfig = GlobalConfig{
-	ApiBind:   ":5000",
-	RedisHost: "localhost",
-	RedisDB:   0,
-	RedisPass: "",
+	ApiBind: ":5000",
+	Redis: Redis{
+		Host: "localhost",
+		Pass: "",
+		DB:   0,
+	},
 }
 
 func LoadGlobalConfig() error {
-	jsonFile, err := os.Open("config.json")
+	log.Println("Loading config.yml")
+	ymlFile, err := ioutil.ReadFile("config.yml")
 	if err != nil {
 		return err
 	}
 	var config = DefaultConfig
-	jsonParser := json.NewDecoder(jsonFile)
-	err = jsonParser.Decode(&config)
+	err = yaml.Unmarshal(ymlFile, &config)
 	if err != nil {
 		return err
 	}
 	Config = config
-	_ = jsonFile.Close()
 	return nil
 }

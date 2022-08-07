@@ -2,14 +2,13 @@
 
 utility for [lhridder/infrared](https://github.com/lhridder/infrared)
 
-### Global config.json
-```json
-{
-  "apiBind": ":5000",
-  "redisHost": "localhost",
-  "redisDB": 0,
-  "redisPass": ""
-}
+### Global config.yml
+```yaml
+apiBind: :5000
+redis:
+  host: localhost
+  pass:
+  db: 0
 ```
 
 ## API

@@ -25,9 +25,9 @@ var (
 func ConnectRedis() error {
 	ctx = context.Background()
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     Config.RedisHost + ":6379",
-		Password: Config.RedisPass,
-		DB:       Config.RedisDB,
+		Addr:     Config.Redis.Host + ":6379",
+		Password: Config.Redis.Pass,
+		DB:       Config.Redis.DB,
 	})
 	_, err := rdb.Ping(ctx).Result()
 	if err != nil {

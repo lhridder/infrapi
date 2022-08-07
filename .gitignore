@@ -15,4 +15,4 @@
 *.yaml
 
 .idea
-config.json
+config.yml
